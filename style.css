@@ -1,0 +1,9 @@
+a, a:hover{
+    color: #6080A5;
+}
+
+.navbar-default .navbar-brand:hover,
+.navbar-default .navbar-brand:focus,
+.navbar-default:hover{
+color:#6080A5 !important;
+}
