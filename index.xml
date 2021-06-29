@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Bruno Conte on Economics | Università di Bologna</title>
+    <link>https://brunoconteleite.github.io/</link>
+    <description>Recent content in Bruno Conte on Economics | Università di Bologna</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language><atom:link href="https://brunoconteleite.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>About Hugo XMin</title>
+      <link>https://brunoconteleite.github.io/about/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://brunoconteleite.github.io/about/</guid>
+      <description>XMin is the first Hugo theme I have designed. The original reason that I wrote it was I needed a minimal example of Hugo themes when I was writing the blogdown book. Basically I wanted a simple theme that supports a navigation menu, a home page, other single pages, lists of pages, blog posts, categories, tags, and RSS. That is all. Nothing fancy. In terms of CSS and JavaScript, I really want to keep them minimal.</description>
+    </item>
+    
+  </channel>
+</rss>
