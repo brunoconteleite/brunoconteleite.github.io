@@ -11,7 +11,7 @@
 
 <meta name="author" content="Bruno Conte, Klaus Desmet, Esteban Rossi-Hansberg" />
 
-<meta name="date" content="2025-01-27" />
+<meta name="date" content="2025-02-09" />
 
 <title>On the Geographical Implication of Carbon Taxes - Replication Package</title>
 
@@ -362,7 +362,7 @@ Taxes - Replication Package</h1>
 Conte</a>, <a href="http://faculty.smu.edu/kdesmet/">Klaus Desmet</a>,
 <a href="https://rossihansberg.economics.uchicago.edu/">Esteban
 Rossi-Hansberg</a></h4>
-<h4 class="date">2025-01-27</h4>
+<h4 class="date">2025-02-09</h4>
 
 </div>
 
@@ -374,52 +374,958 @@ Rossi-Hansberg</a></h4>
 <h1>Overview</h1>
 <p>You can download the replication package
 <strong><a href="https://www.dropbox.com/scl/fo/wgk9vdj6iui0esn02lxdy/h?dl=0&amp;rlkey=ud54ed3lsgvpu80su8ucduka6" target="_blank">here</a></strong>
-(about 4GB).</p>
-<div id="general-structure" class="section level2">
-<h2>General structure</h2>
-<p>The main (root) folder contains the following folders:</p>
+(about 4GB). It is structured as follows:<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></p>
+<pre><code>.
+|- README.md
+|- gict.tex
+|- gict_appendix.tex
+|- gict.bib
+|- codes/
+|  |- gict_01_initialize.m
+|  |- gict_02_data.R
+|  |- gict_03_simulations.m
+|  |- gict_04_process.m
+|  |- gict_05_maps_paper.R
+|  |- inversions/
+|  |- simulations/
+|- input/
+|- output/</code></pre>
+<p>where:</p>
 <ul>
-<li><p><code>codes/</code>: contains all Matlab/R codes used as inputs
-in the main replication codes.</p></li>
+<li><p><code>gict*</code>: manuscript and appendix’s <code>tex</code>
+sources and the references’ <code>.bib</code> file.</p></li>
+<li><p><code>codes/</code>: contains all Matlab/R codes: the main
+<code>gict_*</code> codes and many others in the
+<code>inversions/</code> and <code>simulations/</code>
+subfolders.</p></li>
 <li><p><code>input/</code>: contains the needed inputs (data and more)
-used in the main replication codes.</p></li>
+used in by the replication codes above.</p></li>
 <li><p><code>output/</code>: where all output is stored and
 processed.</p></li>
 </ul>
-<p>Besides, it also contains the <code>README.html</code> file and the
-main replication codes (explained next).</p>
+<p>Besides, it also contains the <code>README.html</code> file.<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a></p>
 </div>
-<div id="replicating-the-results" class="section level2">
-<h2>Replicating the results</h2>
-<p>Replicating the results consist of running a sequence of
-<code>R</code> and <code>Matlab</code> codes. In what follows, we
-provide an overview of the sequential workflow of the replication and a
-brief description of each code. Sections 2 to 4 provide further
-details.</p>
-<p>The sequence of codes are the following:</p>
+<div id="reproducing-the-paper" class="section level1">
+<h1>Reproducing the Paper</h1>
+<p>Replicating the paper consists of running <u>sequentially</u> the
+<code>R</code> and <code>Matlab</code> codes below:</p>
+<table style="width:100%;">
+<caption>Table 1. Overall sequence of replicating codes</caption>
+<colgroup>
+<col width="13%" />
+<col width="56%" />
+<col width="16%" />
+<col width="13%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Code</th>
+<th align="left">Description</th>
+<th align="center"><strong><code>WD</code></strong> line</th>
+<th align="right">CPU hours</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><code>gict_01_initialize.m</code></td>
+<td align="left">Exports raw data to be further processed</td>
+<td align="center">11</td>
+<td align="right">.1</td>
+</tr>
+<tr class="even">
+<td align="left"><code>gict_02_data.R</code></td>
+<td align="left">Processes data from the previous step and produces
+further inputs</td>
+<td align="center">39</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>gict_03_simulations.m</code></td>
+<td align="left">Runs all simulations sequentially</td>
+<td align="center">12</td>
+<td align="right"><span class="math inline">\(\sim\)</span> 700</td>
+</tr>
+<tr class="even">
+<td align="left"><code>gict_04_process.m</code></td>
+<td align="left">Reproduces plots, tables, and exports inputs for the
+maps</td>
+<td align="center">12</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>gict_05_maps_paper.R</code></td>
+<td align="left">Renders all maps <u>and compiles the
+manuscript</u></td>
+<td align="center">39</td>
+<td align="right">3</td>
+</tr>
+</tbody>
+</table>
+<p>Refer to Appendix B below for further details.</p>
+<div id="instructions-and-computational-requirements" class="section level2">
+<h2>Instructions and Computational Requirements</h2>
+<p><u><strong>Make sure to set local working directory
+<code>WD</code></strong></u> to the local package’s root, as indicated
+in Table 1.</p>
+<p>The last replication reproduced the paper with the following
+hardware/software:</p>
+<ul>
+<li><p><code>R</code> version 4.2.0 (2022-04-22) and the following
+libraries: <code>latex2exp</code> (0.9.4), <code>RColorBrewer</code>
+(1.1-3), <code>dplyr</code> (1.0.9), <code>readxl</code> (1.4.0),
+<code>xtable</code> (1.8-4), <code>Rfast</code> (2.0.6), <code>sf</code>
+(1.0-12), <code>rgeos</code> (0.5-9), <code>data.table</code> (1.14.2),
+<code>ggplot2</code> (3.3.6), <code>rgdal</code> (1.5-30),
+<code>raster</code> (3.5-15), and <code>sp</code> (1.5-0).</p></li>
+<li><p><code>Matlab</code> version 9.9.0.1570001 (R2020b) Update 4 and
+Statistics and Machine Learning Toolbox Version 12.0 (R2020b)</p></li>
+<li><p>8-core iMac, <span class="math inline">\(\sim\)</span> 50GB of
+free disk space, and 16 GB of RAM.</p></li>
+</ul>
+<p>The replication with these specifications requires about 720 hours
+(see Table 1).</p>
+</div>
+<div id="outcomes" class="section level2">
+<h2>Outcomes</h2>
+<p>The <strong>final outcome will be the paper in <code>pdf</code>
+format</strong>. All ouputs generated (e.g., figures and tables) are
+described in Appendix Table A1.</p>
+</div>
+</div>
+<div id="data-availability-statement" class="section level1">
+<h1>Data Availability Statement</h1>
+<p><u><strong>All data used in this paper is publicly
+available</strong></u>. They have been collected by the authors and are
+provided with this replication package in non-proprietary format (.csv,
+.shp). Their sources are stated in Table 2 below (see Appendix C for
+details):</p>
+<table>
+<caption>Table 2. List of Data Sources</caption>
+<colgroup>
+<col width="21%" />
+<col width="36%" />
+<col width="21%" />
+<col width="21%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Data Name</th>
+<th align="left">Data Files</th>
+<th align="left">Location</th>
+<th align="left">Citation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">“Conte et al. (2021) data”</td>
+<td align="left">C.csv; desert.csv; diffmult_reduced.mat;
+gaoi_with_data.rdata; grid_025_clipped_*.rdata; H0_areal.mat;
+index_gaoirows_matlab.csv; ksi.csv; l.csv; pop1.csv; T.mat; T0.csv;
+trmult_reduced_baseline.mat; ubar.csv; Y_A.csv; y.csv</td>
+<td align="left"><code>input/</code></td>
+<td align="left">Conte et al. (2021)</td>
+</tr>
+<tr class="even">
+<td align="left">“Natural Earth data”</td>
+<td align="left">ne_10m_lakes.rdata; ne_50m_admin_0_countries.*</td>
+<td align="left"><code>input/</code></td>
+<td align="left">Natural Earth (2018)</td>
+</tr>
+<tr class="odd">
+<td align="left">“Geoboundaries data”</td>
+<td align="left">geoBoundariesCGAZ_ADM1.*</td>
+<td align="left"><code>input/</code>
+<code>geoBoundariesCGAZ/</code></td>
+<td align="left">Runfola et al. (2020)</td>
+</tr>
+<tr class="even">
+<td align="left">“World Bank data”</td>
+<td align="left">GDPPC_PPP_WBDI.csv</td>
+<td align="left"><code>input/</code></td>
+<td align="left">World Bank (2015)</td>
+</tr>
+</tbody>
+</table>
+<p>None of the paper used in this paper comes from experiments or any
+other personal data-sensitive data sources.</p>
+</div>
+<div id="references-and-data-citations" class="section level1">
+<h1>References and Data Citations</h1>
+<ul>
+<li><p>Conte, B., Desmet, K., Nagy, D.K. and Rossi-Hansberg, E., 2021.
+Local sectoral specialization in a warming world. <em>Journal of
+Economic Geography</em>, <em>21(4)</em>, pp.493-530. <a href="https://doi.org/10.1093/jeg/lbab008" class="uri">https://doi.org/10.1093/jeg/lbab008</a></p></li>
+<li><p>Natural Earth. “Free vector and raster map data at 1:10m, 1:50m,
+and 1:110m scales”, 2018, <a href="https://www.naturalearthdata.com/" class="uri">https://www.naturalearthdata.com/</a> Accessed
+21-05-2018</p></li>
+<li><p>Runfola, D., Anderson, A., Baier, H., Crittenden, M., Dowker, E.,
+Fuhrig, S., Goodman, S., Grimsley, G., Layko, R., Melville, G. and
+Mulder, M., 2020. geoBoundaries: A global database of political
+administrative boundaries. <em>PloS one</em>, <em>15(4)</em>,
+p.e0231866.</p></li>
+<li><p>World Bank. “GDP per capita, PPP (current international $)” World
+Development Indicators, The World Bank Group, 2015, <a href="https://data.worldbank.org/indicator/NY.GDP.PCAP.PP.CD" class="uri">https://data.worldbank.org/indicator/NY.GDP.PCAP.PP.CD</a>.
+Accessed 10-06-2022</p></li>
+</ul>
+</div>
+<div id="license" class="section level1">
+<h1>License</h1>
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAAAPCAIAAAD8q9/YAAAABGdBTUEAANbY1E9YMgAAAZRJREFUSMflljFrAjEUx98HaGJvdNO0xU5SuUmkg2c2u94kdDyHTu3QTIJ0UDcLuuQrxMl2KTp0UkRCv4FfIV8hpY1crxoPCyJc73FDCO/l+L3/ey8BSKHp1NgP8Ggsol/zrgkAvV7PGkYpxRgP+cA4Lz+WmdNMInS1Aw/5AGO8izZkLlwWjP/kfdJutxMMXLmu5PP5+NqQUgJA47ZhQhZyUb+pJxUYYWTklVISQgCAUqqUopQCACFESmlELrmlsKr7z33rXNj82e+1dTMaZXU+JHDrqQUA0+lUa00I8X1fa82+zXEcpRTnXAhhNhFGYVXP5jPr6RuLXQDb2bEm6/DAD4/3ACClVEpF55bv+67rRquaMYYxNlGvby/z5TxGYauMuyDjU3MMhSmlQRAYhRljnPO1wugPCsczbJfxkRT+6mG07mEhhOM4ABAEQdjDruuuViutda1WK14V9+zh/YGP3cOjsShXyrlcLkVTesgHCJ10u90YYM/zzi/O/sk9HI6uTqdjpa161Ww2m+yXVrre0qmyTzG2dEynWV7sAAAAAElFTkSuQmCC" alt="alt text here" /> The replication package is under a CC-BY-NC
+license. Usage by commercial entities is allowed, reselling it is
+not.</p>
+<p><br></p>
+<hr />
+<center>
+<h1>
+Appendix
+</h1>
+</center>
+<p><br></p>
+<div id="appendix-a---list-of-figures-and-tables" class="section level2">
+<h2>Appendix A - List of Figures and Tables</h2>
+<table>
+<caption>Table A1. List of Outcomes</caption>
+<colgroup>
+<col width="20%" />
+<col width="35%" />
+<col width="25%" />
+<col width="20%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Figure/Table</th>
+<th align="left">Program</th>
+<th align="center">Line Number<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a></th>
+<th align="right">Output file</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Figure 1 (a)</td>
+<td align="left"><code>codes/gict_04_process.m</code></td>
+<td align="center">733</td>
+<td align="right">Figure1A.png</td>
+</tr>
+<tr class="even">
+<td align="left">Figure 1 (b)</td>
+<td align="left"><code>codes/gict_04_process.m</code></td>
+<td align="center">707</td>
+<td align="right">Figure1B.png</td>
+</tr>
+<tr class="odd">
+<td align="left">Figure 2 (a)</td>
+<td align="left"><code>codes/gict_05_maps_paper.R</code></td>
+<td align="center">180</td>
+<td align="right">Figure2A.png</td>
+</tr>
+<tr class="even">
+<td align="left">Figure 2 (b)</td>
+<td align="left"><code>codes/gict_05_maps_paper.R</code></td>
+<td align="center">273</td>
+<td align="right">Figure2B.png</td>
+</tr>
+<tr class="odd">
+<td align="left">Figure 2 (c)</td>
+<td align="left"><code>codes/gict_05_maps_paper.R</code></td>
+<td align="center">180</td>
+<td align="right">Figure2C.png</td>
+</tr>
+<tr class="even">
+<td align="left">Figure 2 (d)</td>
+<td align="left"><code>codes/gict_05_maps_paper.R</code></td>
+<td align="center">273</td>
+<td align="right">Figure2D.png</td>
+</tr>
+<tr class="odd">
+<td align="left">Figure 3 (a)</td>
+<td align="left"><code>codes/gict_04_process.m</code></td>
+<td align="center">1508</td>
+<td align="right">Figure3A.png</td>
+</tr>
+<tr class="even">
+<td align="left">Figure 3 (b)</td>
+<td align="left"><code>codes/gict_04_process.m</code></td>
+<td align="center">1541</td>
+<td align="right">Figure3B.png</td>
+</tr>
+<tr class="odd">
+<td align="left">Figure 4 (a)</td>
+<td align="left"><code>codes/gict_05_maps_paper.R</code></td>
+<td align="center">389</td>
+<td align="right">Figure4A.png</td>
+</tr>
+<tr class="even">
+<td align="left">Figure 4 (b)</td>
+<td align="left"><code>codes/gict_05_maps_paper.R</code></td>
+<td align="center">389</td>
+<td align="right">Figure4B.png</td>
+</tr>
+<tr class="odd">
+<td align="left">Figure 4 (c)</td>
+<td align="left"><code>codes/gict_05_maps_paper.R</code></td>
+<td align="center">447</td>
+<td align="right">Figure4C.png</td>
+</tr>
+<tr class="even">
+<td align="left">Figure 4 (d)</td>
+<td align="left"><code>codes/gict_05_maps_paper.R</code></td>
+<td align="center">331</td>
+<td align="right">Figure4D.png</td>
+</tr>
+<tr class="odd">
+<td align="left">Figure 5</td>
+<td align="left"><code>codes/gict_05_maps_paper.R</code></td>
+<td align="center">505</td>
+<td align="right">Figure5.png</td>
+</tr>
+<tr class="even">
+<td align="left">Figure 6 (a)</td>
+<td align="left"><code>codes/gict_04_process.m</code></td>
+<td align="center">733</td>
+<td align="right">Figure6A.png</td>
+</tr>
+<tr class="odd">
+<td align="left">Figure 6 (b)</td>
+<td align="left"><code>codes/gict_04_process.m</code></td>
+<td align="center">707</td>
+<td align="right">Figure6B.png</td>
+</tr>
+<tr class="even">
+<td align="left">Figure 7 (a)</td>
+<td align="left"><code>codes/gict_05_maps_paper.R</code></td>
+<td align="center">644</td>
+<td align="right">Figure7A.png</td>
+</tr>
+<tr class="odd">
+<td align="left">Figure 7 (b)</td>
+<td align="left"><code>codes/gict_05_maps_paper.R</code></td>
+<td align="center">737</td>
+<td align="right">Figure7B.png</td>
+</tr>
+<tr class="even">
+<td align="left">Figure 7 (c)</td>
+<td align="left"><code>codes/gict_05_maps_paper.R</code></td>
+<td align="center">644</td>
+<td align="right">Figure7C.png</td>
+</tr>
+<tr class="odd">
+<td align="left">Figure 7 (d)</td>
+<td align="left"><code>codes/gict_05_maps_paper.R</code></td>
+<td align="center">737</td>
+<td align="right">Figure7D.png</td>
+</tr>
+<tr class="even">
+<td align="left">Figure 8 (a)</td>
+<td align="left"><code>codes/gict_04_process.m</code></td>
+<td align="center">1578</td>
+<td align="right">Figure8A.png</td>
+</tr>
+<tr class="odd">
+<td align="left">Figure 8 (b)</td>
+<td align="left"><code>codes/gict_04_process.m</code></td>
+<td align="center">1611</td>
+<td align="right">Figure8B.png</td>
+</tr>
+<tr class="even">
+<td align="left">Figure 9 (a)</td>
+<td align="left"><code>codes/gict_04_process.m</code></td>
+<td align="center">1647</td>
+<td align="right">Figure9A.png</td>
+</tr>
+<tr class="odd">
+<td align="left">Figure 9 (b)</td>
+<td align="left"><code>codes/gict_04_process.m</code></td>
+<td align="center">1665</td>
+<td align="right">Figure9B.png</td>
+</tr>
+<tr class="even">
+<td align="left">Figure 10 (a)</td>
+<td align="left"><code>codes/gict_05_maps_paper.R</code></td>
+<td align="center">853</td>
+<td align="right">Figure10A.png</td>
+</tr>
+<tr class="odd">
+<td align="left">Figure 10 (b)</td>
+<td align="left"><code>codes/gict_05_maps_paper.R</code></td>
+<td align="center">795</td>
+<td align="right">Figure10B.png</td>
+</tr>
+<tr class="even">
+<td align="left">Figure 11 (a)</td>
+<td align="left"><code>codes/gict_04_process.m</code></td>
+<td align="center">2816</td>
+<td align="right">Figure11A.png</td>
+</tr>
+<tr class="odd">
+<td align="left">Figure 11 (b)</td>
+<td align="left"><code>codes/gict_04_process.m</code></td>
+<td align="center">2853</td>
+<td align="right">Figure11B.png</td>
+</tr>
+<tr class="even">
+<td align="left">Figure 12</td>
+<td align="left"><code>codes/gict_04_process.m</code></td>
+<td align="center">3290</td>
+<td align="right">Figure12.png</td>
+</tr>
+<tr class="odd">
+<td align="left">Figure 13 (a)</td>
+<td align="left"><code>codes/gict_05_maps_paper.R</code></td>
+<td align="center">1222</td>
+<td align="right">Figure13A.png</td>
+</tr>
+<tr class="even">
+<td align="left">Figure 13 (b)</td>
+<td align="left"><code>codes/gict_05_maps_paper.R</code></td>
+<td align="center">1245</td>
+<td align="right">Figure13B.png</td>
+</tr>
+<tr class="odd">
+<td align="left">Figure 14 (a)</td>
+<td align="left"><code>codes/gict_04_process.m</code></td>
+<td align="center">3003</td>
+<td align="right">Figure14A.png</td>
+</tr>
+<tr class="even">
+<td align="left">Figure 14 (b)</td>
+<td align="left"><code>codes/gict_04_process.m</code></td>
+<td align="center">3022</td>
+<td align="right">Figure14B.png</td>
+</tr>
+<tr class="odd">
+<td align="left">Figure 15 (a)</td>
+<td align="left"><code>codes/gict_04_process.m</code></td>
+<td align="center">775</td>
+<td align="right">Figure15A.png</td>
+</tr>
+<tr class="even">
+<td align="left">Figure 15 (b)</td>
+<td align="left"><code>codes/gict_04_process.m</code></td>
+<td align="center">755</td>
+<td align="right">Figure15B.png</td>
+</tr>
+<tr class="odd">
+<td align="left">Figure 16 (a)</td>
+<td align="left"><code>codes/gict_05_maps_paper.R</code></td>
+<td align="center">644</td>
+<td align="right">Figure16A.png</td>
+</tr>
+<tr class="even">
+<td align="left">Figure 16 (b)</td>
+<td align="left"><code>codes/gict_05_maps_paper.R</code></td>
+<td align="center">737</td>
+<td align="right">Figure16B.png</td>
+</tr>
+<tr class="odd">
+<td align="left">Figure 16 (c)</td>
+<td align="left"><code>codes/gict_05_maps_paper.R</code></td>
+<td align="center">644</td>
+<td align="right">Figure16C.png</td>
+</tr>
+<tr class="even">
+<td align="left">Figure 16 (d)</td>
+<td align="left"><code>codes/gict_05_maps_paper.R</code></td>
+<td align="center">737</td>
+<td align="right">Figure16D.png</td>
+</tr>
+<tr class="odd">
+<td align="left">Figure 17 (a)</td>
+<td align="left"><code>codes/gict_04_process.m</code></td>
+<td align="center">1905</td>
+<td align="right">Figure17A.png</td>
+</tr>
+<tr class="even">
+<td align="left">Figure 17 (b)</td>
+<td align="left"><code>codes/gict_04_process.m</code></td>
+<td align="center">1923</td>
+<td align="right">Figure17B.png</td>
+</tr>
+<tr class="odd">
+<td align="left">Figure 18 (a)</td>
+<td align="left"><code>codes/gict_05_maps_paper.R</code></td>
+<td align="center">853</td>
+<td align="right">Figure18A.png</td>
+</tr>
+<tr class="even">
+<td align="left">Figure 18 (b)</td>
+<td align="left"><code>codes/gict_05_maps_paper.R</code></td>
+<td align="center">795</td>
+<td align="right">Figure18B.png</td>
+</tr>
+<tr class="odd">
+<td align="left">Figure B1</td>
+<td align="left">From Conte et al. (2021)</td>
+<td align="center">-</td>
+<td align="right">FigureB1.png</td>
+</tr>
+<tr class="even">
+<td align="left">Figure C1 (a)</td>
+<td align="left"><code>codes/gict_05_maps_paper.R</code></td>
+<td align="center">983</td>
+<td align="right">FigureC1A.png</td>
+</tr>
+<tr class="odd">
+<td align="left">Figure C1 (b)</td>
+<td align="left"><code>codes/gict_05_maps_paper.R</code></td>
+<td align="center">1042</td>
+<td align="right">FigureC1B.png</td>
+</tr>
+<tr class="even">
+<td align="left">Figure C2 (a)</td>
+<td align="left"><code>codes/gict_04_process.m</code></td>
+<td align="center">1951</td>
+<td align="right">FigureC2A.png</td>
+</tr>
+<tr class="odd">
+<td align="left">Figure C2 (b)</td>
+<td align="left"><code>codes/gict_04_process.m</code></td>
+<td align="center">1977</td>
+<td align="right">FigureC2B.png</td>
+</tr>
+<tr class="even">
+<td align="left">Figure C2 (c)</td>
+<td align="left"><code>codes/gict_04_process.m</code></td>
+<td align="center">1977</td>
+<td align="right">FigureC2C.png</td>
+</tr>
+<tr class="odd">
+<td align="left">Figure C2 (d)</td>
+<td align="left"><code>codes/gict_04_process.m</code></td>
+<td align="center">2003</td>
+<td align="right">FigureC2D.png</td>
+</tr>
+<tr class="even">
+<td align="left">Figure C3 (a)</td>
+<td align="left"><code>codes/gict_05_maps_paper.R</code></td>
+<td align="center">1103</td>
+<td align="right">FigureC3A.png</td>
+</tr>
+<tr class="odd">
+<td align="left">Figure C3 (b)</td>
+<td align="left"><code>codes/gict_05_maps_paper.R</code></td>
+<td align="center">1162</td>
+<td align="right">FigureC3B.png</td>
+</tr>
+<tr class="even">
+<td align="left">Table C1A<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a></td>
+<td align="left"><code>codes/gict_05_maps_paper.R</code></td>
+<td align="center">1405</td>
+<td align="right">table_eureb.tex</td>
+</tr>
+<tr class="odd">
+<td align="left">Table C1B</td>
+<td align="left"><code>codes/gict_05_maps_paper.R</code></td>
+<td align="center">1410</td>
+<td align="right">table_devreb.tex</td>
+</tr>
+<tr class="even">
+<td align="left">Figure C4 (a)</td>
+<td align="left"><code>codes/gict_04_process.m</code></td>
+<td align="center">3583</td>
+<td align="right">FigureC4A.png</td>
+</tr>
+<tr class="odd">
+<td align="left">Figure C4 (b)</td>
+<td align="left"><code>codes/gict_04_process.m</code></td>
+<td align="center">3567</td>
+<td align="right">FigureC4B.png</td>
+</tr>
+<tr class="even">
+<td align="left">Table D1</td>
+<td align="left"><code>codes/gict_05_maps_paper.R</code></td>
+<td align="center">1395</td>
+<td align="right">table_noreb.tex</td>
+</tr>
+<tr class="odd">
+<td align="left">Table D2</td>
+<td align="left"><code>codes/gict_05_maps_paper.R</code></td>
+<td align="center">1400</td>
+<td align="right">table_locreb.tex</td>
+</tr>
+<tr class="even">
+<td align="left">Figure D1 (a)</td>
+<td align="left"><code>codes/gict_04_process.m</code></td>
+<td align="center">145</td>
+<td align="right">FigureD1A.png</td>
+</tr>
+<tr class="odd">
+<td align="left">Figure D1 (b)</td>
+<td align="left"><code>codes/gict_04_process.m</code></td>
+<td align="center">238</td>
+<td align="right">FigureD1B.png</td>
+</tr>
+<tr class="even">
+<td align="left">Figure D2 (a)</td>
+<td align="left"><code>codes/gict_04_process.m</code></td>
+<td align="center">145</td>
+<td align="right">FigureD2A.png</td>
+</tr>
+<tr class="odd">
+<td align="left">Figure D2 (b)</td>
+<td align="left"><code>codes/gict_04_process.m</code></td>
+<td align="center">238</td>
+<td align="right">FigureD2B.png</td>
+</tr>
+<tr class="even">
+<td align="left">Figure D3 (a)</td>
+<td align="left"><code>codes/gict_04_process.m</code></td>
+<td align="center">1542</td>
+<td align="right">FigureD3A.png</td>
+</tr>
+<tr class="odd">
+<td align="left">Figure D3 (b)</td>
+<td align="left"><code>codes/gict_04_process.m</code></td>
+<td align="center">1559</td>
+<td align="right">FigureD3B.png</td>
+</tr>
+<tr class="even">
+<td align="left">Figure D4</td>
+<td align="left"><code>codes/gict_05_maps_paper.R</code></td>
+<td align="center">540</td>
+<td align="right">FigureD4.png</td>
+</tr>
+<tr class="odd">
+<td align="left">Figure D5 (a)</td>
+<td align="left"><code>codes/gict_04_process.m</code></td>
+<td align="center">3554</td>
+<td align="right">FigureD5A.png</td>
+</tr>
+<tr class="even">
+<td align="left">Figure D5 (b)</td>
+<td align="left"><code>codes/gict_04_process.m</code></td>
+<td align="center">3540</td>
+<td align="right">FigureD5B.png</td>
+</tr>
+<tr class="odd">
+<td align="left">Figure D6 (a)</td>
+<td align="left"><code>codes/gict_04_process.m</code></td>
+<td align="center">1597</td>
+<td align="right">FigureD6A.png</td>
+</tr>
+<tr class="even">
+<td align="left">Figure D6 (b)</td>
+<td align="left"><code>codes/gict_04_process.m</code></td>
+<td align="center">1631</td>
+<td align="right">FigureD6B.png</td>
+</tr>
+<tr class="odd">
+<td align="left">Figure D7</td>
+<td align="left"><code>codes/gict_05_maps_paper.R</code></td>
+<td align="center">914</td>
+<td align="right">FigureD7.png</td>
+</tr>
+<tr class="even">
+<td align="left">Figure D8 (a)</td>
+<td align="left"><code>codes/gict_04_process.m</code></td>
+<td align="center">2845</td>
+<td align="right">FigureD8A.png</td>
+</tr>
+<tr class="odd">
+<td align="left">Figure D8 (b)</td>
+<td align="left"><code>codes/gict_04_process.m</code></td>
+<td align="center">2883</td>
+<td align="right">FigureD8B.png</td>
+</tr>
+<tr class="even">
+<td align="left">Figure D9 (a)</td>
+<td align="left"><code>codes/gict_04_process.m</code></td>
+<td align="center">2845</td>
+<td align="right">FigureD9A.png</td>
+</tr>
+<tr class="odd">
+<td align="left">Figure D9 (b)</td>
+<td align="left"><code>codes/gict_04_process.m</code></td>
+<td align="center">2883</td>
+<td align="right">FigureD9B.png</td>
+</tr>
+<tr class="even">
+<td align="left">Figure D9 (c)</td>
+<td align="left"><code>codes/gict_05_maps_paper.R</code></td>
+<td align="center">1372</td>
+<td align="right">FigureD9C.png</td>
+</tr>
+<tr class="odd">
+<td align="left">Figure D9 (d)</td>
+<td align="left"><code>codes/gict_05_maps_paper.R</code></td>
+<td align="center">1313</td>
+<td align="right">FigureD9D.png</td>
+</tr>
+<tr class="even">
+<td align="left">Figure E1 (a)</td>
+<td align="left"><code>codes/gict_04_process.m</code></td>
+<td align="center">2903</td>
+<td align="right">FigureE1A.png</td>
+</tr>
+<tr class="odd">
+<td align="left">Figure E1 (b)</td>
+<td align="left"><code>codes/gict_04_process.m</code></td>
+<td align="center">2922</td>
+<td align="right">FigureE1B.png</td>
+</tr>
+<tr class="even">
+<td align="left">Figure E1 (c)</td>
+<td align="left"><code>codes/gict_04_process.m</code></td>
+<td align="center">2941</td>
+<td align="right">FigureE1C.png</td>
+</tr>
+<tr class="odd">
+<td align="left">Figure E1 (d)</td>
+<td align="left"><code>codes/gict_04_process.m</code></td>
+<td align="center">2960</td>
+<td align="right">FigureE1D.png</td>
+</tr>
+<tr class="even">
+<td align="left">Figure F1 (a)</td>
+<td align="left"><code>codes/gict_04_process.m</code></td>
+<td align="center">775</td>
+<td align="right">FigureF1A.png</td>
+</tr>
+<tr class="odd">
+<td align="left">Figure F1 (b)</td>
+<td align="left"><code>codes/gict_04_process.m</code></td>
+<td align="center">755</td>
+<td align="right">FigureF1B.png</td>
+</tr>
+<tr class="even">
+<td align="left">Figure F2 (a)</td>
+<td align="left"><code>codes/gict_05_maps_paper.R</code></td>
+<td align="center">180</td>
+<td align="right">FigureF2A.png</td>
+</tr>
+<tr class="odd">
+<td align="left">Figure F2 (b)</td>
+<td align="left"><code>codes/gict_05_maps_paper.R</code></td>
+<td align="center">273</td>
+<td align="right">FigureF2B.png</td>
+</tr>
+<tr class="even">
+<td align="left">Figure F2 (c)</td>
+<td align="left"><code>codes/gict_05_maps_paper.R</code></td>
+<td align="center">180</td>
+<td align="right">FigureF2C.png</td>
+</tr>
+<tr class="odd">
+<td align="left">Figure F2 (d)</td>
+<td align="left"><code>codes/gict_05_maps_paper.R</code></td>
+<td align="center">273</td>
+<td align="right">FigureF2D.png</td>
+</tr>
+<tr class="even">
+<td align="left">Table F1</td>
+<td align="left"><code>codes/gict_05_maps_paper.R</code></td>
+<td align="center">1415</td>
+<td align="right">table_noreb_USA.tex</td>
+</tr>
+<tr class="odd">
+<td align="left">Figure F3</td>
+<td align="left"><code>codes/gict_05_maps_paper.R</code></td>
+<td align="center">505</td>
+<td align="right">FigureF3.png</td>
+</tr>
+<tr class="even">
+<td align="left">Figure F4 (a)</td>
+<td align="left"><code>codes/gict_05_maps_paper.R</code></td>
+<td align="center">389</td>
+<td align="right">FigureF4A.png</td>
+</tr>
+<tr class="odd">
+<td align="left">Figure F4 (b)</td>
+<td align="left"><code>codes/gict_05_maps_paper.R</code></td>
+<td align="center">389</td>
+<td align="right">FigureF4B.png</td>
+</tr>
+<tr class="even">
+<td align="left">Figure F4 (c)</td>
+<td align="left"><code>codes/gict_05_maps_paper.R</code></td>
+<td align="center">447</td>
+<td align="right">FigureF4C.png</td>
+</tr>
+<tr class="odd">
+<td align="left">Figure F4 (d)</td>
+<td align="left"><code>codes/gict_05_maps_paper.R</code></td>
+<td align="center">331</td>
+<td align="right">FigureF4D.png</td>
+</tr>
+<tr class="even">
+<td align="left">Figure F5 (a)</td>
+<td align="left"><code>codes/gict_04_process.m</code></td>
+<td align="center">1842</td>
+<td align="right">FigureF5A.png</td>
+</tr>
+<tr class="odd">
+<td align="left">Figure F5 (b)</td>
+<td align="left"><code>codes/gict_04_process.m</code></td>
+<td align="center">1859</td>
+<td align="right">FigureF5B.png</td>
+</tr>
+<tr class="even">
+<td align="left">Figure F5 (c)</td>
+<td align="left"><code>codes/gict_04_process.m</code></td>
+<td align="center">2941</td>
+<td align="right">FigureF5C.png</td>
+</tr>
+<tr class="odd">
+<td align="left">Figure F5 (d)</td>
+<td align="left"><code>codes/gict_04_process.m</code></td>
+<td align="center">2960</td>
+<td align="right">FigureF5D.png</td>
+</tr>
+<tr class="even">
+<td align="left">Figure F6</td>
+<td align="left"><code>codes/gict_05_maps_paper.R</code></td>
+<td align="center">914</td>
+<td align="right">FigureF6.png</td>
+</tr>
+<tr class="odd">
+<td align="left">Figure F7 (a)</td>
+<td align="left"><code>codes/gict_04_process.m</code></td>
+<td align="center">3661</td>
+<td align="right">FigureF7A.png</td>
+</tr>
+<tr class="even">
+<td align="left">Figure F7 (b)</td>
+<td align="left"><code>codes/gict_04_process.m</code></td>
+<td align="center">3645</td>
+<td align="right">FigureF7B.png</td>
+</tr>
+<tr class="odd">
+<td align="left">Table F2</td>
+<td align="left"><code>codes/gict_05_maps_paper.R</code></td>
+<td align="center">1420</td>
+<td align="right">table_locreb_USA.tex</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="appendix-b---further-replication-details" class="section level2">
+<h2>Appendix B - Further Replication Details</h2>
+<div id="pre-processing-data" class="section level3">
+<h3>Pre-processing data</h3>
+<p>The code <code>gict_01_initialize.m</code> exports raw inputs from
+Conte et al. (2021) <code>y.csv</code>, <code>l.csv</code>, and
+<code>Y_A.csv</code> in grid format to be loaded in <code>R</code>
+(e.g. <code>Y_A_raw.csv</code>).</p>
+<p>Then, <code>gict_02_data.R</code> imports the raw input and corrects
+the grid cell-level agricultural output where it exceeds total GDP
+(i.e. it corrects some measurement error from Conte et al. (2021)).<a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a> It also
+exports <strong>regional specific geographical indexes</strong>: 180x360
+grids of dummies for cells in a certain region
+(e.g. <code>input/index_eu26.csv</code> stands for dummies of the
+countries at the European Union).</p>
+</div>
+<div id="simulations" class="section level3">
+<h3>Simulations</h3>
+<p><code>gict_03_simulations.m</code> <strong>sequentially</strong> runs
+all of the simulations of the paper (after setting the <strong>working
+directory in line 11</strong>). It calls the <code>.m</code> codes for
+each specific simulation, stored in the <code>codes/</code> and
+<code>codes/inversion/</code> folders. Among many, the following codes
+are called:</p>
+<ul>
+<li><code>inversion.m</code>: does the inversion for sectoral
+productivities and amenities as in Conte et al. (2021).</li>
+<li><code>moving_costs.m</code>: does the inversion for mobility costs
+and separates amenities from initial utility as in Conte et
+al. (2021).</li>
+<li><code>theta_inversion.m</code>: does the inversion for sectoral
+productivities and amenities as in Conte et al. (2021) <em>for different
+values of</em> <span class="math inline">\(\theta\)</span> (trade
+elasticity).</li>
+<li><code>theta_moving_costs.m</code>: does the inversion for mobility
+costs separates amenities from initial utility as in Conte et al. (2021)
+<em>for different values of</em> <span class="math inline">\(\theta\)</span> (trade elasticity).</li>
+<li><code>omega_moving_costs.m</code>: does the inversion for mobility
+costs separates amenities from initial utility as in Conte et al. (2021)
+<em>for different values of</em> <span class="math inline">\(\Omega\)</span> (migration elasticity).</li>
+<li><code>alpha_inversion.m</code>: does the inversion for mobility
+costs separates amenities from initial utility as in Conte et al. (2021)
+<em>for different values of</em> <span class="math inline">\(\alpha_M\)</span> (agglomeration forces for <span class="math inline">\(M\)</span>).</li>
+<li><code>alpha_moving_costs.m</code>: does the inversion for mobility
+costs separates amenities from initial utility as in Conte et al. (2021)
+<em>for different values of</em> <span class="math inline">\(\alpha_M\)</span> (agglomeration forces for <span class="math inline">\(M\)</span>).</li>
+<li><code>lambda_moving_costs.m</code>: does the inversion for mobility
+costs separates amenities from initial utility as in Conte et al. (2021)
+<em>for different values of</em> <span class="math inline">\(\lambda\)</span> (congestion forces).</li>
+</ul>
+<p>Besides, the main simulation codes (stored in <code>codes/</code>)
+stand for:<a href="#fn6" class="footnote-ref" id="fnref6"><sup>6</sup></a></p>
+<ul>
+<li><code>*reb/</code>: simulations for each rebating scheme
+(i.e. <code>noreb</code> = simulation without rebating) for 100 periods
+and CO2 tax = 40USD/tCO2 starting in 2021. Stores the outputs in the
+<code>output/</code> folder.</li>
+<li><code>*reb_HS/</code>: simulations for each rebating scheme and
+several CO2 tax values (0 to 65 USD/tCO2) for the <em>hump-shaped</em>
+(<code>_HS</code>) curves. It runs for 21 periods. Stores the outputs in
+the <code>output/</code> folder.</li>
+<li><code>locreb_HS_theta/</code>: simulations with local rebating of
+CO2 taxes of different values (0 to 65 USD/tCO2) for the
+<em>hump-shaped</em> (<code>_HS</code>) curves. It runs for 21 periods
+<em>for different values of</em> <span class="math inline">\(\theta\)</span> (the trade elasticity). Stores the
+outputs in the <code>output/</code> folder.</li>
+<li><code>locreb_HS_omega/</code>: simulations with local rebating of
+CO2 taxes of different values (0 to 65 USD/tCO2) for the
+<em>hump-shaped</em> (<code>_HS</code>) curves. It runs for 21 periods
+<em>for different values of</em> <span class="math inline">\(\Omega\)</span> (the migration elasticity). Stores
+the outputs in the <code>output/</code> folder.</li>
+<li><code>*reb*_USA/</code>: simulations with local/no rebating of CO2
+taxes <strong>adopted in the USA</strong>
+(e.g. <code>noreb_HS_USA</code> = <em>hump-shaped</em> simulations as
+above but for taxes set in the USA). Stores the outputs in the
+<code>output/</code> folder.</li>
+</ul>
+<p>Note that <code>gict_03_simulations.m</code> runs all the simulations
+<em>sequentially</em>, which makes it a time-consuming task (each
+individual simulation can take half a day to run on a rather powerfull
+CPU).</p>
+<p>To address that, each simulation folder in <code>codes/</code>
+contains also a <code>.sh</code> shell code that can be run individually
+in high-performance computers (e.g. be submitted as a <em>job</em> in a
+server-like computer/cluster). By launching each of them individually in
+such a computer/cluster allows one to reproduce all results in <em>in
+parallel</em>. Importantly, before that one would need to run all of the
+codes of the <code>codes/inversion/</code> folder explained above
+(e.g. <code>inversion.m</code>).</p>
+</div>
+<div id="processing-the-results" class="section level3">
+<h3>Processing the results</h3>
+<p>The codes <code>gict_04_process.m</code> and
+<code>gict_05_maps_paper.R</code> process all of the simulation results
+and report them as documented in the paper. In particular,
+<code>gict_04_process.m</code>:</p>
 <ol style="list-style-type: decimal">
-<li><code>gict_initialize.m</code>: initializes the replication package
-by exporting some raw data to be further processed in
-<code>R</code>.</li>
-<li><code>gict_data.R</code>: processes and exports data from previous
-step and produces further inputs for the simulations.</li>
-<li><code>gict_replicate.m</code>: runs all simulations
-sequentially.</li>
-<li><code>gict_results.m</code>: processes all the results from the
-previous step, reproduces several plots, and exports inputs needed for
-producing the maps in <code>R</code>.</li>
-<li><code>gict_maps_and_paper.R</code>: reproduces all the maps of the
-paper and compiles the <code>gict.tex</code> source (which reproduces
-the paper in <code>pdf</code> format).</li>
+<li>Exports all results in the <code>R</code> grid format to be used as
+inputs for the maps.</li>
+<li>Plots the evolution of region-sectoral output over time with/out CO2
+taxes for several rebating schemes (like Figure 2).</li>
+<li>Reproduces the tables with the aggregate/regional effects of CO2
+taxes for all rebating schemes (like Table 1).</li>
+<li>Reproduces the plots of regional effects of CO2 taxes with respect
+to different tax values (like Figure 4).</li>
+<li>Calculates and plots the effects of CO2 taxes on emissions and
+temperature with different rebating schemes (Figures 6 and 18).</li>
 </ol>
-<p>Throughout, several inputs are needed (some from previous papers). We
-describe them next.</p>
+<p>Then, <code>gict_05_maps_paper.R</code>:</p>
+<ol style="list-style-type: decimal">
+<li>Reproduces the maps of the paper using some of the outputs from
+<code>gict_04_process.m</code>.</li>
+<li>Adjusts the layout of the <code>.tex</code> tables to fit the paper’
+layout.</li>
+<li><strong>Renders the final <code>.pdf</code></strong> using the
+<code>gict.tex</code> and <code>gict_appendix.tex</code> latex
+sources.</li>
+</ol>
 </div>
-<div id="inputs" class="section level2">
-<h2>Inputs</h2>
+</div>
+<div id="appendix-c---inputs-and-data-details" class="section level2">
+<h2>Appendix C - Inputs and Data Details</h2>
 <ul>
 <li><code>gict.tex</code>: <code>.tex</code> source of the
 manuscript.</li>
+<li><code>gict_appendix.tex</code>: <code>.tex</code> source of the
+online appendix</li>
+<li><code>gict.bib</code>: <code>.bib</code> source of academic
+references.</li>
 <li><code>input/H0_areal.mat</code>: 180x360 grid with fraction of land
 per cell.</li>
 <li><code>input/C.csv</code>: 180x360 grid of the country indices per
@@ -461,159 +1367,34 @@ at .25 x .25 degree clipped and intersected with the country shapes
 (used to render the maps).</li>
 <li><code>codes/inversions/gict_functions.R</code>: loads several
 functions used in the main <code>R</code> replication codes.</li>
-<li><code>output/figures/graph1.pdf</code>: Figure 3.a from Conte et
-al. (2021) that is reproduced in the paper.</li>
-<li><code>gict_bib.bib</code>: source of the bibliographic references
-cited in the paper.</li>
+<li><code>output/figures/FigureB1.pdf</code>: Figure 3.a from Conte et
+al. (2021) that is reproduced in the paper (as FigureB1).</li>
 </ul>
 </div>
-</div>
-<div id="pre-processing-data" class="section level1">
-<h1>Pre-processing data</h1>
-<p>The codes <code>gict_initialize.m</code> and <code>gict_data.R</code>
-pre-process the some inputs (after setting the <strong>working directory
-in lines 12 and 39</strong>, respectively). In particular, the former
-exports the raw inputs from Conte et al. (2021) <code>y.csv</code>,
-<code>l.csv</code>, and <code>Y_A.csv</code> in grid format to be loaded
-in <code>R</code> (e.g. <code>Y_A_raw.csv</code>).</p>
-<p>Then, <code>gict_data.R</code> imports the raw input and corrects the
-grid cell-level agricultural output where it exceeds total GDP (i.e. it
-corrects some measurement error from Conte et al. (2021)). In
-particular, it assigns to those cells the average of the relative
-agricultural GDP of the neighboring cells of the same country.</p>
-<p>Moreover, <code>gict_data.R</code> exports <strong>regional specific
-geographical indexes</strong>: 180x360 grids of dummies for cells in a
-certain region (e.g. <code>input/index_eu26.csv</code> stands for
-dummies of the countries at the European Union).</p>
-</div>
-<div id="simulations" class="section level1">
-<h1>Simulations</h1>
-<p><code>gict_replicate.m</code> <strong>sequentially</strong> runs all
-of the simulations of the paper (after setting the <strong>working
-directory in line 11</strong>). It calls the <code>.m</code> codes for
-each specific simulation, stored in the <code>codes/</code> and
-<code>codes/inversion/</code> folders. Within the latter, the following
-codes are called:</p>
-<ul>
-<li><code>inversion.m</code>: does the inversion for sectoral
-productivities and amenities as in Desmet et al. (2018) and Conte et
-al. (2021).</li>
-<li><code>moving_costs.m</code>: does the inversion for mobility costs
-and separates amenities from initial utility as in Desmet et al. (2018)
-and Conte et al. (2021).</li>
-<li><code>theta_inversion.m</code>: does the inversion for sectoral
-productivities and amenities as in Desmet et al. (2018) and Conte et
-al. (2021) <em>for different values of</em> <span class="math inline">\(\theta\)</span> (trade elasticity).</li>
-<li><code>theta_moving_costs.m</code>: does the inversion for mobility
-costs separates amenities from initial utility as in Desmet et
-al. (2018) and Conte et al. (2021) <em>for different values of</em>
-<span class="math inline">\(\theta\)</span> (trade elasticity).</li>
-<li><code>omega_moving_costs.m</code>: does the inversion for mobility
-costs separates amenities from initial utility as in Desmet et
-al. (2018) and Conte et al. (2021) <em>for different values of</em>
-<span class="math inline">\(\Omega\)</span> (migration elasticity).</li>
-<li><code>alpha_inversion.m</code>: does the inversion for mobility
-costs separates amenities from initial utility as in Desmet et
-al. (2018) and Conte et al. (2021) <em>for different values of</em>
-<span class="math inline">\(\alpha_M\)</span> (agglomeration forces for
-<span class="math inline">\(M\)</span>).</li>
-<li><code>alpha_moving_costs.m</code>: does the inversion for mobility
-costs separates amenities from initial utility as in Desmet et
-al. (2018) and Conte et al. (2021) <em>for different values of</em>
-<span class="math inline">\(\alpha_M\)</span> (agglomeration forces for
-<span class="math inline">\(M\)</span>).</li>
-<li><code>lambda_moving_costs.m</code>: does the inversion for mobility
-costs separates amenities from initial utility as in Desmet et
-al. (2018) and Conte et al. (2021) <em>for different values of</em>
-<span class="math inline">\(\lambda\)</span> (congestion forces).</li>
-</ul>
-<p>Besides, the main simulation codes (stored in <code>codes/</code>)
-stand for:<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></p>
-<ul>
-<li><code>*reb/</code>: simulations for each rebating scheme
-(i.e. <code>noreb</code> = simulation without rebating) for 100 periods
-and CO2 tax = 40USD/tCO2 starting in 2021. Stores the outputs in the
-<code>output/</code> folder.</li>
-<li><code>*reb_HS/</code>: simulations for each rebating scheme and
-several CO2 tax values (0 to 65 USD/tCO2) for the <em>hump-shaped</em>
-(<code>_HS</code>) curves. It runs for 21 periods. Stores the outputs in
-the <code>output/</code> folder.</li>
-<li><code>locreb_HS_theta/</code>: simulations with local rebating of
-CO2 taxes of different values (0 to 65 USD/tCO2) for the
-<em>hump-shaped</em> (<code>_HS</code>) curves. It runs for 21 periods
-<em>for different values of</em> <span class="math inline">\(\theta\)</span> (the trade elasticity). Stores the
-outputs in the <code>output/</code> folder.</li>
-<li><code>locreb_HS_omega/</code>: simulations with local rebating of
-CO2 taxes of different values (0 to 65 USD/tCO2) for the
-<em>hump-shaped</em> (<code>_HS</code>) curves. It runs for 21 periods
-<em>for different values of</em> <span class="math inline">\(\Omega\)</span> (the migration elasticity). Stores
-the outputs in the <code>output/</code> folder.</li>
-<li><code>*reb*_USA/</code>: simulations with local/no rebating of CO2
-taxes <strong>adopted in the USA</strong>
-(e.g. <code>noreb_HS_USA</code> = <em>hump-shaped</em> simulations as
-above but for taxes set in the USA). Stores the outputs in the
-<code>output/</code> folder.</li>
-</ul>
-<p>Note that <code>gict_replicate.m</code> runs all the simulations
-<em>sequentially</em>, which makes it a time-consuming task (each
-individual simulation can take half a day to run on a rather powerfull
-CPU).</p>
-<p>To address that, each simulation folder in <code>codes/</code>
-contains also a <code>.sh</code> shell code that can be run individually
-in high-performance computers (e.g. be submitted as a <em>job</em> in a
-server-like computer/cluster). By launching each of them individually in
-such a computer/cluster allows one to reproduce all results in <em>in
-parallel</em>. Importantly, before that one would need to run all of the
-codes of the <code>codes/inversion/</code> folder explained above
-(e.g. <code>inversion.m</code>).</p>
-</div>
-<div id="processing-the-results" class="section level1">
-<h1>Processing the results</h1>
-<p>The codes <code>gict_results.m</code> and
-<code>gict_maps_and_paper.R</code> process all of the simulation results
-and report them as documented in the paper (after setting the
-<strong>working directory in lines 12 and 39</strong>, respectively). In
-particular, <code>gict_results.m</code>:</p>
-<ol style="list-style-type: decimal">
-<li>Exports all results in the <code>R</code> grid format to be used as
-inputs for the maps.</li>
-<li>Plots the evolution of region-sectoral output over time with/out CO2
-taxes for several rebating schemes (like Figure 2).</li>
-<li>Reproduces the tables with the aggregate/regional effects of CO2
-taxes for all rebating schemes (like Table 1).</li>
-<li>Reproduces the plots of regional effects of CO2 taxes with respect
-to different tax values (like Figure 4).</li>
-<li>Calculates and plots the effects of CO2 taxes on emissions and
-temperature with different rebating schemes (Figures 6 and 18).</li>
-</ol>
-<p>Then, <code>gict_maps_and_paper.R</code>:</p>
-<ol style="list-style-type: decimal">
-<li>Reproduces the maps of the paper using some of the outputs from
-<code>gict_results.m</code>.</li>
-<li>Adjusts the layout of the <code>.tex</code> tables to fit the paper’
-layout.</li>
-<li><strong>Renders the final <code>.pdf</code></strong> using the
-<code>gict.tex</code> latex source.</li>
-</ol>
-</div>
-<div id="references" class="section level1">
-<h1>References</h1>
-<ul>
-<li><p>Conte, B., Desmet, K., Nagy, D.K. and Rossi-Hansberg, E., 2021.
-Local sectoral specialization in a warming world. <em>Journal of
-Economic Geography</em>, <em>21(4)</em>, pp.493-530.</p></li>
-<li><p>Deaton, A. and Stone, A.A., 2013. Two happiness puzzles.
-<em>American Economic Review</em>, <em>103(3)</em>, pp.591-97.</p></li>
-<li><p>Desmet, K., Nagy, D.K. and Rossi-Hansberg, E., 2018. The
-geography of development. <em>Journal of Political Economy</em>,
-<em>126(3)</em>, pp.903-983.</p></li>
-</ul>
 </div>
 <div class="footnotes footnotes-end-of-document">
 <hr />
 <ol>
-<li id="fn1"><p>Note that all simulations whose name does not include
-<code>_USA</code> stand for exercises where carbon is taxed in the EU.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn1"><p>The HTML version of this package can be accessed at (<a href="https://brunoconteleite.github.io/about/GICT_README.html" class="uri">https://brunoconteleite.github.io/about/GICT_README.html</a>).<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn2"><p>The structure of this replication package benefitted
+from the <em>“README for social science replication packages”</em> (<a href="https://social-science-data-editors.github.io/template_README/" class="uri">https://social-science-data-editors.github.io/template_README/</a>),
+to whom we are very thankful.<a href="#fnref2" class="footnote-back">↩︎</a></p></li>
+<li id="fn3"><p>The lines stated here refer to where the output (figure
+or table) is <strong>initially</strong> generated, which often is done
+in loops (thus the same line nuber for multiple figures). Those loops
+save figures/tables with names different than what stated in the table;
+for that, <code>codes/gict_05_maps_paper.m</code> (lines 1424-1686)
+adjusts each of these outputs’ names to the ones stated in the table. <a href="#fnref3" class="footnote-back">↩︎</a></p></li>
+<li id="fn4"><p>Note that all tables are previsouly generated in
+<code>codes/gict_04_process.m</code> (lines 1187-1269) and stored as
+temporary <code>.tex</code> tables. The codes/lines stated in here refer
+to the codes that process them to the final format used in the
+manuscript.<a href="#fnref4" class="footnote-back">↩︎</a></p></li>
+<li id="fn5"><p>In particular, it assigns to those cells the average of
+the relative agricultural GDP of the neighboring cells of the same
+country.<a href="#fnref5" class="footnote-back">↩︎</a></p></li>
+<li id="fn6"><p>Note that all simulations whose name does not include
+<code>_USA</code> stand for exercises where carbon is taxed in the EU.<a href="#fnref6" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
 
