@@ -11,7 +11,7 @@
 
 <meta name="author" content="Bruno Conte, Klaus Desmet, Esteban Rossi-Hansberg" />
 
-<meta name="date" content="2025-02-09" />
+<meta name="date" content="2025-02-16" />
 
 <title>On the Geographical Implication of Carbon Taxes - Replication Package</title>
 
@@ -362,7 +362,7 @@ Taxes - Replication Package</h1>
 Conte</a>, <a href="http://faculty.smu.edu/kdesmet/">Klaus Desmet</a>,
 <a href="https://rossihansberg.economics.uchicago.edu/">Esteban
 Rossi-Hansberg</a></h4>
-<h4 class="date">2025-02-09</h4>
+<h4 class="date">2025-02-16</h4>
 
 </div>
 
@@ -474,13 +474,13 @@ hardware/software:</p>
 libraries: <code>latex2exp</code> (0.9.4), <code>RColorBrewer</code>
 (1.1-3), <code>dplyr</code> (1.0.9), <code>readxl</code> (1.4.0),
 <code>xtable</code> (1.8-4), <code>Rfast</code> (2.0.6), <code>sf</code>
-(1.0-12), <code>rgeos</code> (0.5-9), <code>data.table</code> (1.14.2),
-<code>ggplot2</code> (3.3.6), <code>rgdal</code> (1.5-30),
-<code>raster</code> (3.5-15), and <code>sp</code> (1.5-0).</p></li>
+(1.0-12), <code>data.table</code> (1.14.2), <code>ggplot2</code>
+(3.3.6), <code>rgdal</code> (1.5-30), <code>raster</code> (3.5-15), and
+<code>sp</code> (1.5-0).</p></li>
 <li><p><code>Matlab</code> version 9.9.0.1570001 (R2020b) Update 4 and
 Statistics and Machine Learning Toolbox Version 12.0 (R2020b)</p></li>
-<li><p>8-core iMac, <span class="math inline">\(\sim\)</span> 50GB of
-free disk space, and 16 GB of RAM.</p></li>
+<li><p>8-core iMac, MacOs 10.15.6, <span class="math inline">\(\sim\)</span> 50GB of free disk space, and 16 GB
+of RAM.</p></li>
 </ul>
 <p>The replication with these specifications requires about 720 hours
 (see Table 1).</p>
@@ -489,16 +489,16 @@ free disk space, and 16 GB of RAM.</p></li>
 <h2>Outcomes</h2>
 <p>The <strong>final outcome will be the paper in <code>pdf</code>
 format</strong>. All ouputs generated (e.g., figures and tables) are
-described in Appendix Table A1.</p>
+described in Appendix Table A1.<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a></p>
 </div>
 </div>
 <div id="data-availability-statement" class="section level1">
 <h1>Data Availability Statement</h1>
 <p><u><strong>All data used in this paper is publicly
-available</strong></u>. They have been collected by the authors and are
-provided with this replication package in non-proprietary format (.csv,
-.shp). Their sources are stated in Table 2 below (see Appendix C for
-details):</p>
+available</strong></u>.<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a> They have been collected by the authors and
+are provided with this replication package in non-proprietary format
+(.csv, .shp). Their sources are stated in Table 2 below (see Appendix C
+for details):</p>
 <table>
 <caption>Table 2. List of Data Sources</caption>
 <colgroup>
@@ -595,7 +595,7 @@ Appendix
 <tr class="header">
 <th align="left">Figure/Table</th>
 <th align="left">Program</th>
-<th align="center">Line Number<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a></th>
+<th align="center">Line Number<a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a></th>
 <th align="right">Output file</th>
 </tr>
 </thead>
@@ -907,7 +907,7 @@ Appendix
 <td align="right">FigureC3B.png</td>
 </tr>
 <tr class="even">
-<td align="left">Table C1A<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a></td>
+<td align="left">Table C1A<a href="#fn6" class="footnote-ref" id="fnref6"><sup>6</sup></a></td>
 <td align="left"><code>codes/gict_05_maps_paper.R</code></td>
 <td align="center">1405</td>
 <td align="right">table_eureb.tex</td>
@@ -1207,7 +1207,7 @@ Conte et al. (2021) <code>y.csv</code>, <code>l.csv</code>, and
 (e.g. <code>Y_A_raw.csv</code>).</p>
 <p>Then, <code>gict_02_data.R</code> imports the raw input and corrects
 the grid cell-level agricultural output where it exceeds total GDP
-(i.e. it corrects some measurement error from Conte et al. (2021)).<a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a> It also
+(i.e. it corrects some measurement error from Conte et al. (2021)).<a href="#fn7" class="footnote-ref" id="fnref7"><sup>7</sup></a> It also
 exports <strong>regional specific geographical indexes</strong>: 180x360
 grids of dummies for cells in a certain region
 (e.g. <code>input/index_eu26.csv</code> stands for dummies of the
@@ -1248,7 +1248,7 @@ costs separates amenities from initial utility as in Conte et al. (2021)
 <em>for different values of</em> <span class="math inline">\(\lambda\)</span> (congestion forces).</li>
 </ul>
 <p>Besides, the main simulation codes (stored in <code>codes/</code>)
-stand for:<a href="#fn6" class="footnote-ref" id="fnref6"><sup>6</sup></a></p>
+stand for:<a href="#fn8" class="footnote-ref" id="fnref8"><sup>8</sup></a></p>
 <ul>
 <li><code>*reb/</code>: simulations for each rebating scheme
 (i.e. <code>noreb</code> = simulation without rebating) for 100 periods
@@ -1379,22 +1379,32 @@ al. (2021) that is reproduced in the paper (as FigureB1).</li>
 <li id="fn2"><p>The structure of this replication package benefitted
 from the <em>“README for social science replication packages”</em> (<a href="https://social-science-data-editors.github.io/template_README/" class="uri">https://social-science-data-editors.github.io/template_README/</a>),
 to whom we are very thankful.<a href="#fnref2" class="footnote-back">↩︎</a></p></li>
-<li id="fn3"><p>The lines stated here refer to where the output (figure
+<li id="fn3"><p>Importantly, depending on the versions of <code>R</code>
+and the <code>.tex</code> compiler, the resolution of the figures in the
+final <code>pdf</code> can be smaller/larger than the one in the
+submitted manuscript. If that is the case, one needs to adjust the
+<code>scale</code> parameter in the <code>\includegraphics[]</code>
+command that insert the figures in the texts.<a href="#fnref3" class="footnote-back">↩︎</a></p></li>
+<li id="fn4"><p>We certify to have legitimate access to and permission
+to use the data used in this manuscript and to have documented
+permission to redistribute/publish the data contained within this
+replication package.<a href="#fnref4" class="footnote-back">↩︎</a></p></li>
+<li id="fn5"><p>The lines stated here refer to where the output (figure
 or table) is <strong>initially</strong> generated, which often is done
 in loops (thus the same line nuber for multiple figures). Those loops
 save figures/tables with names different than what stated in the table;
 for that, <code>codes/gict_05_maps_paper.m</code> (lines 1424-1686)
-adjusts each of these outputs’ names to the ones stated in the table. <a href="#fnref3" class="footnote-back">↩︎</a></p></li>
-<li id="fn4"><p>Note that all tables are previsouly generated in
+adjusts each of these outputs’ names to the ones stated in the table. <a href="#fnref5" class="footnote-back">↩︎</a></p></li>
+<li id="fn6"><p>Note that all tables are previsouly generated in
 <code>codes/gict_04_process.m</code> (lines 1187-1269) and stored as
 temporary <code>.tex</code> tables. The codes/lines stated in here refer
 to the codes that process them to the final format used in the
-manuscript.<a href="#fnref4" class="footnote-back">↩︎</a></p></li>
-<li id="fn5"><p>In particular, it assigns to those cells the average of
+manuscript.<a href="#fnref6" class="footnote-back">↩︎</a></p></li>
+<li id="fn7"><p>In particular, it assigns to those cells the average of
 the relative agricultural GDP of the neighboring cells of the same
-country.<a href="#fnref5" class="footnote-back">↩︎</a></p></li>
-<li id="fn6"><p>Note that all simulations whose name does not include
-<code>_USA</code> stand for exercises where carbon is taxed in the EU.<a href="#fnref6" class="footnote-back">↩︎</a></p></li>
+country.<a href="#fnref7" class="footnote-back">↩︎</a></p></li>
+<li id="fn8"><p>Note that all simulations whose name does not include
+<code>_USA</code> stand for exercises where carbon is taxed in the EU.<a href="#fnref8" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
 
