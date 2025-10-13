@@ -1,0 +1,20 @@
+/* --- Custom Link Colors (More Specific) --- */
+
+/* Target links specifically inside the <main> part of the page */
+main a {
+  color: #0056b3 !important; /* A nice, deep blue */
+  text-decoration: none;
+}
+
+main a:hover {
+  color: #003d7e !important; /* A darker blue on hover */
+  text-decoration: underline;
+}
+
+main a:visited {
+  color: #551a8b !important; /* A standard purple for visited links */
+}
+
+main a:active {
+  color: #ff4136 !important; /* A red color for the active state */
+}
